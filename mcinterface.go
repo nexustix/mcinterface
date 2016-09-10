@@ -9,6 +9,8 @@ import (
 	bp "github.com/nexustix/boilerplate"
 )
 
+//mcinterface setupprofile <modpackName> <instanceDir>
+
 func main() {
 	/*
 		var zeMadness McConfig
@@ -58,6 +60,39 @@ func main() {
 		outFile.Close()
 	*/
 
+	/*
+		var tmpProfileConfig ProfileConfig
+
+		usr, err := user.Current()
+		bp.FailError(err)
+		workingDir := usr.HomeDir
+		minecraftDir := path.Join(workingDir, ".minecraft")
+		os.MkdirAll(minecraftDir, 0777)
+
+		filePath := path.Join(minecraftDir, "launcher_profiles.json")
+
+		tmpProfileConfig.LoadFromFile(filePath)
+
+		tmpProfile := Profile{}
+
+		forgeVersions := GetLocalForgeVersions(minecraftDir)
+		if len(forgeVersions) >= 1 {
+			tmpProfile.Name = "cheseCake"
+			tmpProfile.LastVersionID = forgeVersions[0]
+			tmpProfile.GameDir = path.Join(workingDir, "cheeseCake")
+
+			tmpProfileConfig.AddProfile(tmpProfile)
+			tmpProfileConfig.SaveToFile(filePath)
+		} else {
+			fmt.Printf("<!> No forge installation found please install forge\n")
+		}
+	*/
+
+	//usr, err := user.Current()
+	//bp.FailError(err)
+	//workingDir := usr.HomeDir
+	//minecraftDir := path.Join(workingDir, ".minecraft")
+
 	var tmpProfileConfig ProfileConfig
 
 	usr, err := user.Current()
@@ -73,20 +108,26 @@ func main() {
 	tmpProfile := Profile{}
 
 	forgeVersions := GetLocalForgeVersions(minecraftDir)
-	if len(forgeVersions) >= 1 {
-		tmpProfile.Name = "cheseCake"
-		tmpProfile.LastVersionID = forgeVersions[0]
-		tmpProfile.GameDir = path.Join(workingDir, "cheeseCake")
 
-		tmpProfileConfig.AddProfile(tmpProfile)
-		tmpProfileConfig.SaveToFile(filePath)
-	} else {
-		fmt.Printf("<!> No forge installation found please install forge\n")
+	args := os.Args
+
+	programAction := bp.StringAtIndex(1, args)
+	modpackName := bp.StringAtIndex(2, args)
+	instanceDir := bp.StringAtIndex(3, args)
+
+	switch programAction {
+	case "setupprofile":
+		if len(forgeVersions) >= 1 {
+			tmpProfile.Name = modpackName
+			tmpProfile.LastVersionID = forgeVersions[0]
+			tmpProfile.GameDir = instanceDir
+
+			tmpProfileConfig.AddProfile(tmpProfile)
+			tmpProfileConfig.SaveToFile(filePath)
+		} else {
+			fmt.Printf("<!> No forge installation found please install forge\n")
+		}
+
 	}
-
-	//usr, err := user.Current()
-	//bp.FailError(err)
-	//workingDir := usr.HomeDir
-	//minecraftDir := path.Join(workingDir, ".minecraft")
 
 }
