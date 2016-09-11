@@ -1,0 +1,18 @@
+language: go
+go:
+- tip
+install:
+- go get github.com/nexustix/boilerplate
+before_deploy:
+- env GOOS=linux GOARCH=amd64 go build -o ${HOME}/dist/linux64/mcinterface github.com/nexustix/mcinterface
+- env GOOS=windows GOARCH=amd64 go build -o ${HOME}/dist/windows64/mcinterface.exe github.com/nexustix/mcinterface
+deploy:
+  provider: releases
+  api_key:
+    secure: OV1ZAruevS1/sAnMLP+m5qqQkoTvbUQDAgsaHx9PkpzURDtSBRUj1iruvmeV9pfVwWOF3kBLEO5a75ePsbElPI8IQOVKcqk80CotDzhGE2yEJMGo4bpw1ufzAzkogdUp3WLYjHLscB/dgSpbxNODvbUsQLol3uVYOj3mNTcDY7nhdBwTHqMQr7LvVStPcVblpCcp7PMJNjF3VPs4gevtur7qbCHcwPT6oabR8RlaBHtzz+Cftowyz5sgqqn1q5GgNSFjK5Y7oIOK++5OO2uiiFR8MvZU7JNurnaTuRzrQDezLsdCXACE+oN+6bl2L3RKIMfiYZnLc6yZKbgmY/yPp4o1nu/uuQJmU1sSSZ2fCiMTholONpr1TUOXcMPvdb74UcvsIt4/gBOmW9QvNkxtb1Ryp9i4qN+aYRt9KHwXaxMmNodQu9f9+hsbJREoqI299yfDN3PFF6bwpyPRrXf34MH2w6BT/610iqbiIm7Xrsx/3d+1YrhMZ44e9/97SlNMa0GCNkOjYfH5HzHRBkq2eyQ3rqKNxHyZHsLxxJr8//Gx/S2owrEbRJ3VztRTebUgVSOWOlPUhD7uDkZ68LklZ5r/qGG4866bVZc4R8rXcL3p+bxNs1yTi+qF6nnQSO4bd+YH48JoheYPdJ+aP9Kh8VYG0IWh4c58pGlIYWEK3ls=
+  file:
+    - "${HOME}/dist/windows64/mcinterface.exe"
+    - "${HOME}/dist/linux64/mcinterface"
+  skip_cleanup: true
+  on:
+    tags: true
