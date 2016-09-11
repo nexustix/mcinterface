@@ -127,6 +127,7 @@ func main() {
 			tmpProfile.JavaArgs = "-Xmx2G"
 
 			tmpProfileConfig.AddProfile(tmpProfile)
+			tmpProfileConfig.SelectedProfile = modpackName
 			tmpProfileConfig.SaveToFile(filePath)
 		} else {
 			fmt.Printf("<!> No forge installation found please install forge\n")
