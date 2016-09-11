@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -101,6 +102,9 @@ func main() {
 	bp.FailError(err)
 	workingDir := usr.HomeDir
 	minecraftDir := path.Join(workingDir, ".minecraft")
+	if runtime.GOOS == "windows" {
+		minecraftDir = path.Join(workingDir, "AppData", "Roaming", ".minecraft")
+	}
 	os.MkdirAll(minecraftDir, 0777)
 
 	filePath := path.Join(minecraftDir, "launcher_profiles.json")
