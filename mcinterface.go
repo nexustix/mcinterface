@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"strconv"
+	"strings"
 
 	bp "github.com/nexustix/boilerplate"
 )
@@ -119,7 +121,7 @@ func main() {
 	case "setupprofile":
 		if len(forgeVersions) >= 1 {
 			tmpProfile.Name = modpackName
-			tmpProfile.LastVersionID = forgeVersions[0]
+			tmpProfile.LastVersionID = getLatestForgeVersionID(forgeVersions)
 			tmpProfile.GameDir = instanceDir
 
 			tmpProfileConfig.AddProfile(tmpProfile)
@@ -130,4 +132,21 @@ func main() {
 
 	}
 
+}
+
+func getLatestForgeVersionID(forgeVersions []string) string {
+	largestInt := 0
+	latestVersionString := ""
+	for _, v := range forgeVersions {
+		segments := strings.Split(v, ".")
+		if len(segments) > 0 {
+			i, err := strconv.ParseInt(segments[len(segments)-1], 10, 32)
+			bp.FailError(err)
+			if int(i) > largestInt {
+				latestVersionString = v
+				largestInt = int(i)
+			}
+		}
+	}
+	return latestVersionString
 }
