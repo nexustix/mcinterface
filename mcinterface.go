@@ -11,7 +11,7 @@ import (
 	bp "github.com/nexustix/boilerplate"
 )
 
-//mcinterface setupprofile <modpackName> <instanceDir>
+//mcinterface setupprofile <modpackName> <minecraftVersion> <instanceDir>
 
 func main() {
 	/*
@@ -115,7 +115,8 @@ func main() {
 
 	programAction := bp.StringAtIndex(1, args)
 	modpackName := bp.StringAtIndex(2, args)
-	instanceDir := bp.StringAtIndex(3, args)
+	//minecraftVersion := bp.StringAtIndex(3, args)
+	instanceDir := bp.StringAtIndex(4, args)
 
 	switch programAction {
 	case "setupprofile":
@@ -123,6 +124,7 @@ func main() {
 			tmpProfile.Name = modpackName
 			tmpProfile.LastVersionID = getLatestForgeVersionID(forgeVersions)
 			tmpProfile.GameDir = instanceDir
+			tmpProfile.JavaArgs = "-Xmx2G"
 
 			tmpProfileConfig.AddProfile(tmpProfile)
 			tmpProfileConfig.SaveToFile(filePath)
